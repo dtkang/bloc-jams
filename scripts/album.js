@@ -60,5 +60,5 @@ var setCurrentAlbum = function(album) {
 };
 
 window.onload = function() {
-    //setCurrentAlbum(albumPicasso);
+    setCurrentAlbum(albumPicasso);
 }
