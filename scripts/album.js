@@ -64,10 +64,21 @@ var findParentByClassName = function(element, classname) {
     if (element) {
         
         var currentParentNode = element.parentElement;
-        while(currentParentNode.className != classname && currentParentNode.className !== null)
-        {
+        
+        if (currentParentNode === null) {
+            window.alert("No parent found");
+            return null;
+        }
+        
+        while(currentParentNode.className != classname && currentParentNode.className !== null) {
             currentParentNode = currentParentNode.parentNode;
         }
+        
+        if (currentParentNode.className === null) {
+            window.alert("No parent found with that class name");
+            return null;
+        }
+        
         return currentParentNode;
         
     }
