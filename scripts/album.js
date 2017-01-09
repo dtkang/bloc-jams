@@ -30,8 +30,6 @@ var createSongRow = function(songNumber, songName, songLength) {
     		    $('.main-controls .play-pause').html(playerBarPlayButton);
     		    currentSoundFile.pause();
     		}
-    		//currentlyPlayingSongNumber = null;
-    		//currentSongFromAlbum = null;
     	}
     	
     	updatePlayerBarSong();
@@ -163,6 +161,31 @@ var getSongNumberCell = function(number) {
     return $('.song-item-number[data-song-number="' + number + '"]')
 };
 
+var togglePlayFromPlayerBar = function() {
+	var currentlyPlayingCell = getSongNumberCell(currentlyPlayingSongNumber);
+	var songNumber = parseInt(currentlyPlayingCell.attr('data-song-number'));
+	
+	if (currentlyPlayingSongNumber !== null) {
+		currentlyPlayingCell.html(currentlyPlayingSongNumber);
+	}
+	if (currentlyPlayingSongNumber !== songNumber) {
+		$(this).html(playerBarPauseButton);
+		currentlyPlayingCell.html(pauseButtonTemplate);
+		setSong(songNumber);
+		currentSoundFile.play();
+	} else if (currentlyPlayingSongNumber === songNumber) {
+		if (currentSoundFile.isPaused()) {
+		    currentlyPlayingCell.html(pauseButtonTemplate);
+		    $('.main-controls .play-pause').html(playerBarPauseButton);
+		    currentSoundFile.play();
+		} else {
+		    currentlyPlayingCell.html(playButtonTemplate);
+		    $('.main-controls .play-pause').html(playerBarPlayButton);
+		    currentSoundFile.pause();
+		}
+	}    
+};
+
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
 var playerBarPlayButton = '<span class="ion-play"></span>';
@@ -176,9 +199,12 @@ var currentVolume = 80;
 
 var $previousButton = $('.main-controls .previous');
 var $nextButton = $('.main-controls .next');
+var $barPlayPause = $('.main-controls .play-pause');
 
 $(document).ready(function() {
     setCurrentAlbum(albumPicasso);
     $previousButton.click(previousSong);
     $nextButton.click(nextSong);
+    $barPlayPause.click(togglePlayFromPlayerBar);
 });
+
